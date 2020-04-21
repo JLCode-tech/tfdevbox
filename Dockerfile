@@ -7,9 +7,9 @@ FROM alpine:latest
 
 LABEL maintainer "jarrod@f5.com"
 
-ENV TFANSIBLE_REPO https://github.com/tkam8/tfansible.git
+#ENV TFANSIBLE_REPO https://github.com/tkam8/tfansible.git
 # The GitHub branch to target for dynamic resources
-ENV TFANSIBLE_GH_BRANCH master
+#ENV TFANSIBLE_GH_BRANCH master
 
 # setuid so things like ping work
 #RUN chmod +s /bin/busybox
