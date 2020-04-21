@@ -1,12 +1,11 @@
 ############################################################
-# Dockerfile to build tfansible 
-# Multi-Stage builds require Docker Engine 17.05 or higher
+# Dockerfile to build tfdevbox 
 ############################################################
 
 # Start with alpine
-FROM alpine:3.11
+FROM alpine:latest
 
-LABEL maintainer "t.kam@f5.com"
+LABEL maintainer "jarrod@f5.com"
 
 ENV TFANSIBLE_REPO https://github.com/tkam8/tfansible.git
 # The GitHub branch to target for dynamic resources
@@ -26,7 +25,7 @@ RUN chmod +x /usr/sbin/go-dnsmasq
 # Start S6 init 
 # ENTRYPOINT ["/init"]
 # Start boot script
-CMD ["/tfansboot/start"]
+#CMD ["/tfdevboot/start"]
 
 # Add useful APKs
 RUN apk add --update openssh openssl bash curl git vim nano python py-pip wget gawk gcc g++
@@ -35,22 +34,21 @@ RUN apk add --update openssh openssl bash curl git vim nano python py-pip wget g
 RUN pip install --upgrade pip
 
 # Setup various users and passwords
-RUN adduser -h /home/tfansible -u 1000 -s /bin/bash tfansible -D
-RUN echo 'tfansible:default' | chpasswd
+RUN adduser -h /home/tfdevbox -u 1000 -s /bin/bash tfdevbox -D
+RUN echo 'tfdevbox:default' | chpasswd
 RUN echo 'root:default' | chpasswd
 
 # Expose SSH 
 EXPOSE 22 
 
 # Copy in base FS from repo into root
-
-COPY fs /
+#COPY fs /
 
 # Set execute permissions for all files under tfansboot
-RUN chmod +x /tfansboot/*
+RUN chmod +x /tfdevboot/*
 
 # Set Work directory
-WORKDIR /home/tfansible
+WORKDIR /home/tfdevbox
 
 RUN chmod 777 /tmp
 
@@ -60,6 +58,11 @@ RUN apk add --update gcc python-dev linux-headers libc-dev libffi libffi-dev ope
 # Install google cloud sdk
 RUN curl -sSL https://sdk.cloud.google.com | bash 
 ENV PATH $PATH:/root/google-cloud-sdk/bin
+
+# Install aws cloud sdk
+RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
+     && unzip awscli-bundle.zip \
+     && sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
 # Install ansible and required libraries
 RUN echo "----Installing Ansible----"  && \
@@ -90,7 +93,7 @@ RUN wget -q https://ftp.yz.yamagata-u.ac.jp/pub/network/apache/xerces/c/3/source
      && rm -rf xerces-c-${XERCESC_VERSION}
 
 # Set the Terraform and Terragrunt image versions
-ENV TERRAFORM_VERSION=0.12.21
+ENV TERRAFORM_VERSION=0.12.24
 ENV TERRAFORM_SHA256SUM=ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9
 ENV TERRAGRUNT_VERSION=v0.22.5
 
