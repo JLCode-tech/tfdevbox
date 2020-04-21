@@ -44,8 +44,8 @@ EXPOSE 22
 # Copy in base FS from repo into root
 #COPY fs /
 
-# Set execute permissions for all files under tfansboot
-RUN chmod +x /tfdevboot/*
+# Set execute permissions for all files under tfdevboot
+#RUN chmod +x /tfdevboot/*
 
 # Set Work directory
 WORKDIR /home/tfdevbox
