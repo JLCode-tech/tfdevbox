@@ -78,19 +78,19 @@ remote_tmp = /tmp/.ansible-${USER}/tmp\n'\
 >> /etc/ansible/ansible.cfg
 
 # Build xerces-c
-ENV XERCESC_VERSION=3.2.2
-RUN wget -q https://ftp.yz.yamagata-u.ac.jp/pub/network/apache/xerces/c/3/sources/xerces-c-${XERCESC_VERSION}.zip \
-     && unzip -q xerces-c-${XERCESC_VERSION}.zip  \
-     && rm -f xerces-c-${XERCESC_VERSION}.zip \
-     && cd xerces-c-${XERCESC_VERSION} \
-     && ./configure --prefix=/usr --disable-static \
-     && make -j$(nproc) \
-     && make install \
-     && mkdir -p /build_thirdparty/usr/lib \
-     && cp -P /usr/lib/libxerces-c*.so* /build_thirdparty/usr/lib \
-     && for i in /build_thirdparty/usr/lib/*; do strip -s $i 2>/dev/null || /bin/true; done \
-     && cd .. \
-     && rm -rf xerces-c-${XERCESC_VERSION}
+#ENV XERCESC_VERSION=3.2.2
+#RUN wget -q https://ftp.yz.yamagata-u.ac.jp/pub/network/apache/xerces/c/3/sources/xerces-c-${XERCESC_VERSION}.zip \
+#     && unzip -q xerces-c-${XERCESC_VERSION}.zip  \
+#     && rm -f xerces-c-${XERCESC_VERSION}.zip \
+#     && cd xerces-c-${XERCESC_VERSION} \
+#     && ./configure --prefix=/usr --disable-static \
+#     && make -j$(nproc) \
+#     && make install \
+#     && mkdir -p /build_thirdparty/usr/lib \
+#     && cp -P /usr/lib/libxerces-c*.so* /build_thirdparty/usr/lib \
+#     && for i in /build_thirdparty/usr/lib/*; do strip -s $i 2>/dev/null || /bin/true; done \
+#     && cd .. \
+#     && rm -rf xerces-c-${XERCESC_VERSION}
 
 # Set the Terraform and Terragrunt image versions
 ENV TERRAFORM_VERSION=0.12.24
