@@ -94,8 +94,9 @@ remote_tmp = /tmp/.ansible-${USER}/tmp\n'\
 
 # Set the Terraform and Terragrunt image versions
 ENV TERRAFORM_VERSION=0.12.24
-ENV TERRAFORM_SHA256SUM=ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9
-ENV TERRAGRUNT_VERSION=v0.22.5
+#ENV TERRAFORM_SHA256SUM=ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9
+ENV TERRAFORM_SHA256SUM=602d2529aafdaa0f605c06adb7c72cfb585d8aa19b3f4d8d189b42589e27bf11
+ENV TERRAGRUNT_VERSION=v0.23.1
 
 # Install Terraform
 RUN echo "----Installing Terraform----"  && \
