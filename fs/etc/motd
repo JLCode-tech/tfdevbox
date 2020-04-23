@@ -20,7 +20,7 @@ services running:
 To access these services you may need to remap ports on your host to the
 local container using the command:
 
- docker run -p 2222:22 -it JLCode-tech/tfdevbox
+ docker run -p 2222:22 -it jarrodl/tfdevbox
 
 You can then connect using the following:
 
