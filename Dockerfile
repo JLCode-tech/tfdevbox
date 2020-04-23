@@ -36,13 +36,12 @@ RUN echo "----Installing AWS Cloud SDK----" && \
      && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
 # Install azure sdk
-RUN echo "----Installing Azure Cloud SDk----" && \
-     curl -L https://aka.ms/InstallAzureCli | bash
-
+RUN echo "----Installing Azure Cloud SDK----" && \
+     pip install azure-cli
 
 # Install ansible and required libraries
 RUN echo "----Installing Ansible----"  && \
-    pip install ansible bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
+    pip install ansible
 
 # Set the Terraform and Terragrunt image versions
 ENV TERRAFORM_VERSION=0.12.24
