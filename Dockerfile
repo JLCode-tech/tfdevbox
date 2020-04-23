@@ -1,70 +1,56 @@
 ############################################################
-# Dockerfile to build tfdevbox 
+# Dockerfile to build devbox 
 ############################################################
 
-# Start with alpine
-FROM f5-cli:latest
+# Start with f5-cli
+FROM f5devcentral/f5-cli:latest
 
 LABEL maintainer "jarrod@f5.com"
 
-ENV TFDEVBOX_REPO https://github.com/JLCode-tech/tfdevbox.git
-# The GitHub branch to target for dynamic resources
-ENV TFDEVBOX_GH_BRANCH master
-
-# setuid so things like ping work
-#RUN chmod +s /bin/busybox
-
-# Add in S6 overlay so we can run multiple services 
-# ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.8.0/s6-overlay-amd64.tar.gz /tmp/
-# RUN gunzip -c /tmp/s6-overlay-amd64.tar.gz | tar -xf - -C / && rm -f /tmp/s6-overlay-amd64.tar.gz
-
-# Add go-dnsmasq so resolver works
-#ADD https://github.com/janeczku/go-dnsmasq/releases/download/1.0.7/go-dnsmasq-min_linux-amd64 /usr/sbin/go-dnsmasq
-#RUN chmod +x /usr/sbin/go-dnsmasq
-
-# Start S6 init 
-# ENTRYPOINT ["/init"]
-# Start boot script
-#CMD ["/tfdevbox/start"]
-
-# Add useful APKs
-#RUN apk add --update openssh openssl bash curl git vim nano python py-pip wget gawk gcc g++
+# Add Required APKs
+RUN apk add --update openssh openssl bash curl git wget gcc g++ \
 
 # Upgrade pip
-#RUN pip install --upgrade pip
+RUN pip install --upgrade pip
+
+# Add required pip packages
+RUN pip install bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
 
 # Setup various users and passwords
-#RUN adduser -h /home/tfdevbox -u 1000 -s /bin/bash tfdevbox -D
-#RUN echo 'tfdevbox:default' | chpasswd
-#RUN echo 'root:default' | chpasswd
+RUN adduser -h /home/tfdevbox -u 1000 -s /bin/bash tfdevbox -D
+RUN echo 'tfdevbox:default' | chpasswd
+RUN echo 'root:default' | chpasswd
 
 # Expose SSH 
-#EXPOSE 22 
+EXPOSE 22 
 
 # Install google cloud sdk
-RUN curl -sSL https://sdk.cloud.google.com | bash 
+RUN echo "----Installing Google Cloud SDK----" && \
+     curl -sSL https://sdk.cloud.google.com | bash 
 ENV PATH $PATH:/root/google-cloud-sdk/bin
 
 # Install aws cloud sdk
-RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
+RUN echo "----Installing AWS Cloud SDK----" && \
+     curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
      && unzip awscli-bundle.zip \
      && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
 
+# Install azure sdk
+RUN echo "----Installing Azure Cloud SDk----" && \
+     curl -L https://aka.ms/InstallAzureCli | bash
+
+
 # Install ansible and required libraries
 RUN echo "----Installing Ansible----"  && \
-    pip install ansible==2.8.8 bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
+    pip install ansible bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
 
 # Set the Terraform and Terragrunt image versions
 ENV TERRAFORM_VERSION=0.12.24
-#ENV TERRAFORM_SHA256SUM=ca0d0796c79d14ee73a3d45649dab5e531f0768ee98da71b31e423e3278e9aa9
-ENV TERRAFORM_SHA256SUM=602d2529aafdaa0f605c06adb7c72cfb585d8aa19b3f4d8d189b42589e27bf11
 ENV TERRAGRUNT_VERSION=v0.23.1
 
 # Install Terraform
 RUN echo "----Installing Terraform----"  && \
     curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip > terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
-    #echo "${TERRAFORM_SHA256SUM}  terraform_${TERRAFORM_VERSION}_linux_amd64.zip" > terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
-    #sha256sum -cs terraform_${TERRAFORM_VERSION}_SHA256SUMS && \
     unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/bin && \
     rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip  && \
     rm -f terraform_${TERRAFORM_VERSION}_SHA256SUMS
