@@ -11,5 +11,5 @@ if [ ! -d "/tmp/tfdevbox-repo" ]; then
 fi
 
 # the updateRepos script takes in a json file as an argument, and will automatically look for a user-defined /tmp/user_repos.json 
-python /tfansboot/updateRepos.py /tmp/tfdevbox-repo/fs/etc/tfdevboxrepo.d/base.json
-python /tfansboot/cloneGitRepos.py
+python /tfdevbox/updateRepos.py /tmp/tfdevbox-repo/fs/etc/tfdevboxrepo.d/base.json
+python /tfdevbox/cloneGitRepos.py
