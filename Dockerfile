@@ -8,7 +8,7 @@ FROM f5devcentral/f5-cli:latest
 LABEL maintainer "jarrod@f5.com"
 
 # Add Required APKs
-RUN apk add --update openssh openssl bash curl git wget gcc g++ \
+RUN apk add --update openssh openssl bash curl git wget gcc g++
 
 # Upgrade pip
 RUN pip install --upgrade pip
