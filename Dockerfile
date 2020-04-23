@@ -45,7 +45,7 @@ EXPOSE 22
 COPY fs /
 
 # Set execute permissions for all files under tfdevboot
-#RUN chmod +x /tfdevboot/*
+RUN chmod +x /tfdevbox/*
 
 # Set Work directory
 WORKDIR /home/tfdevbox
