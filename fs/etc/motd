@@ -1,0 +1,32 @@
+                                .----------.
+                               /          /
+                              /   ______.'
+                        _.._ /   /_
+                      .' .._/      '''--.
+                      | '  '___          `.
+                    __| |__    `'.         |
+                   |__   __|      )        |
+                      | | ......-'        /
+                      | | \          _..'`
+                      | |  '------'''
+                      | |                     
+                      |_|                     
+
+Welcome to the tfdevbox container.  This image has the following
+services running:
+
+ SSH  tcp/22
+
+To access these services you may need to remap ports on your host to the
+local container using the command:
+
+ docker run -p 2222:22 -it JLCode-tech/tfdevbox
+
+You can then connect using the following:
+
+ SSH:  ssh -p 2222 tfdevbox@localhost
+
+Default Credentials:
+
+ tfdevbox/default
+ root/default

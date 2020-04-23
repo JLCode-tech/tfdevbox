@@ -7,9 +7,9 @@ FROM alpine:latest
 
 LABEL maintainer "jarrod@f5.com"
 
-#ENV TFANSIBLE_REPO https://github.com/tkam8/tfansible.git
+ENV TFDEVBOX_REPO https://github.com/JLCode-tech/tfdevbox.git
 # The GitHub branch to target for dynamic resources
-#ENV TFANSIBLE_GH_BRANCH master
+ENV TFDEVBOX_GH_BRANCH master
 
 # setuid so things like ping work
 #RUN chmod +s /bin/busybox
@@ -25,7 +25,7 @@ RUN chmod +x /usr/sbin/go-dnsmasq
 # Start S6 init 
 # ENTRYPOINT ["/init"]
 # Start boot script
-#CMD ["/tfdevboot/start"]
+CMD ["/tfdevbox/start"]
 
 # Add useful APKs
 RUN apk add --update openssh openssl bash curl git vim nano python py-pip wget gawk gcc g++
@@ -42,7 +42,7 @@ RUN echo 'root:default' | chpasswd
 EXPOSE 22 
 
 # Copy in base FS from repo into root
-#COPY fs /
+COPY fs /
 
 # Set execute permissions for all files under tfdevboot
 #RUN chmod +x /tfdevboot/*
@@ -63,6 +63,9 @@ ENV PATH $PATH:/root/google-cloud-sdk/bin
 RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" \
      && unzip awscli-bundle.zip \
      && ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+# Install f5 cli
+RUN pip install f5-cli
 
 # Install ansible and required libraries
 RUN echo "----Installing Ansible----"  && \

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+export TFDEVBOX_HOST_IP=`/sbin/ifconfig eth0 | awk '/inet addr/{print substr($2,6)}'`
+export CONTAINER_ID=`basename "$(cat /proc/1/cpuset)"`
+# Uncomment below if you want to add the full container ID in the TFDEVBOX_ENV file
+#echo "CONTAINER_ID=$CONTAINER_ID" > /tfdevbox/TFDEVBOX_ENV
+
+for e in `env`
+do
+	if [[ $e == TFDEVBOX_* ]]
+	then
+		echo "[environment] $e"
+		echo $e >> /tfdevbox/TFDEVBOX_ENV
+	fi
+done
+
+echo "Running boot scripts..."
+/tfdevbox/cloneGitRepos.sh
+
+# Print motd
+cat /etc/motd
+
+echo ""
+echo "(you can now detach by using Ctrl+P+Q)"
+echo ""
+
+/bin/bash --login
