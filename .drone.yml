@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: Build and Notify
 
@@ -29,9 +30,9 @@ steps:
     channel: docker-image-builds
     template: >
       {{#success build.status}}
-        build {{build.number}} Success. Container Built / Test / Uploaded - Nice One !
+        build {{build.number}} {{build.link}} Success. Container Built / Test / Uploaded - Nice One !
       {{else}}
-        build {{build.number}} Failed. Computer says No !
+        build {{build.number}} {{build.link}} Failed. Computer says No !
       {{/success}}
     when:
       status: [ success, failure ]
