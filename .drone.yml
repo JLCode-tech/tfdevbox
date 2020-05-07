@@ -2,16 +2,14 @@ kind: pipeline
 name: default
 
 steps:
-- name: docker
-    image: plugins/docker
-    settings:
-      repo: jarrodl/tfdevbox
-      tags:
-        - ${DRONE_COMMIT_SHA:0:7}
-        - ${DRONE_COMMIT_BRANCH}
-      force_tag: true
-      use_cache: true
-      username:
-        from_secret: docker_registry_username
-      password:
-        from_secret: docker_registry_password
+- name: docker  
+  image: plugins/docker
+  settings:
+    username: 
+      from_secret: docker_registry_username
+    password: 
+      from_secret: docker_registry_password
+    repo: jarrodl/tfdevbox
+    tags:
+      - ${DRONE_COMMIT_SHA:0:7}
+      - ${DRONE_COMMIT_BRANCH}
