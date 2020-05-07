@@ -1,7 +1,15 @@
 kind: pipeline
-name: default
+name: Build and Notify
 
 steps:
+- name: start-notify
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: SLACK_WEB_URL
+    channel: docker-image-builds
+    template: >
+        Build {{build.number}} of {{build.branch}} started. {{build.link}}  
 - name: docker  
   image: plugins/docker
   settings:
@@ -13,3 +21,17 @@ steps:
     tags:
       - ${DRONE_COMMIT_SHA:0:7}
       - ${DRONE_COMMIT_BRANCH}
+- name: end-notify
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: SLACK_WEB_URL
+    channel: docker-image-builds
+    template: >
+      {{#success build.status}}
+        build {{build.number}} Success. Container Built / Test / Uploaded - Nice One !
+      {{else}}
+        build {{build.number}} Failed. Computer says No !
+      {{/success}}
+    when:
+      status: [ success, failure ]
