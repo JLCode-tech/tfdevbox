@@ -35,4 +35,6 @@ steps:
         build {{build.number}} {{build.link}} Failed. Computer says No !
       {{/success}}
     when:
-      status: [ success, failure ]
+      status: 
+      - success
+      - failure
