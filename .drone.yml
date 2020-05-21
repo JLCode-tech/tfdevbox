@@ -45,8 +45,8 @@ steps:
     #  status: 
     #  - success
     #  - failure
-  depends_on:
-    - build
+  #depends_on:
+  #  - build
   
   trigger:
     status:
