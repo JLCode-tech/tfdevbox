@@ -8,7 +8,7 @@ FROM f5devcentral/f5-cli:latest
 LABEL maintainer "jarrod@f5.com"
 
 # Add Required APKs
-RUN apk add --update openssh openssl bash curl git wget gcc g++
+RUN apk add --update pip
 
 # Upgrade pip
 RUN pip install --upgrade pip
@@ -44,8 +44,8 @@ RUN echo "----Installing Ansible----"  && \
     pip install ansible
 
 # Set the Terraform and Terragrunt image versions
-ENV TERRAFORM_VERSION=0.12.24
-ENV TERRAGRUNT_VERSION=v0.23.1
+ENV TERRAFORM_VERSION=0.12.25
+ENV TERRAGRUNT_VERSION=v0.23.18
 
 # Install Terraform
 RUN echo "----Installing Terraform----"  && \
