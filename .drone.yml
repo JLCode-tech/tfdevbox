@@ -41,15 +41,15 @@ steps:
       {{else}}
         build {{build.number}} {{build.link}} Failed. Computer says No !
       {{/success}}
-    #when:
+  #when:
     #  status: 
     #  - success
     #  - failure
 
   depends_on:
-    - docker
+    - build
   
-  trigger:
-    status:
-      - success
-      - failure
+  #trigger:
+  #  status:
+  #    - success
+  #    - failure
