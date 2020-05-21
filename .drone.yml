@@ -47,15 +47,9 @@ steps:
         build {{build.number}} {{build.link}} Failed. Computer says No !
       {{/success}}
   when:
-      status: 
-      - success
-      - failure
+      status: [ success, failure ]
 
-  depends_on:
-    - startnotify
-    - imagebuild
+  depends_on: [ imagebuild ]
   
   trigger:
-    status:
-      - success
-      - failure
+    status: [ success, failure ]
