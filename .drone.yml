@@ -1,9 +1,9 @@
 ---
 kind: pipeline
-name: Build and Notify
+name: build
 
 steps:
-- name: start-notify
+- name: startnotify
   image: plugins/slack
   settings:
     webhook:
@@ -13,7 +13,7 @@ steps:
         Build {{build.number}} of {{build.branch}} started. {{build.link}}  
 - name: docker  
   image: plugins/docker
-  failure: ignore
+  #failure: ignore
   settings:
     username: 
       from_secret: docker_registry_username
@@ -23,7 +23,13 @@ steps:
     tags:
       - ${DRONE_COMMIT_SHA:0:7}
       - ${DRONE_COMMIT_BRANCH}
-- name: end-notify
+
+---
+kind: pipeline
+name: end-notify
+
+steps:
+- name: endnotify
   image: plugins/slack
   settings:
     webhook:
@@ -39,3 +45,10 @@ steps:
     #  status: 
     #  - success
     #  - failure
+  depends_on:
+    - build
+  
+  trigger:
+    status:
+      - success
+      - failure
