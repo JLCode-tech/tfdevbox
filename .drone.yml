@@ -22,6 +22,7 @@ steps:
     tags:
       - ${DRONE_COMMIT_SHA:0:7}
       - ${DRONE_COMMIT_BRANCH}
+    failure: ignore
 - name: end-notify
   image: plugins/slack
   settings:

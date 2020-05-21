@@ -8,7 +8,7 @@ FROM f5devcentral/f5-cli:latest
 LABEL maintainer "jarrod@f5.com"
 
 # Add Required APKs
-# RUN apk add --update pip
+ RUN apk add --update pip
 # Current f5-cli now has PIP installed
 
 # Upgrade pip
