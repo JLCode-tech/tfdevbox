@@ -33,6 +33,11 @@ steps:
 kind: pipeline
 name: endnotify
 
+depends_on: [ imagebuild ]
+  
+trigger:
+    status: [ success, failure ]
+
 steps:
 - name: endnotify
   image: plugins/slack
@@ -49,7 +54,4 @@ steps:
   when:
       status: [ success, failure ]
 
-  depends_on: [ imagebuild ]
-  
-  trigger:
-    status: [ success, failure ]
+ 
