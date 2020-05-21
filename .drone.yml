@@ -45,8 +45,9 @@ steps:
     #  status: 
     #  - success
     #  - failure
-  #depends_on:
-  #  - build
+
+  depends_on:
+    - docker
   
   trigger:
     status:
