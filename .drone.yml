@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-name: build
+name: startnotify
 
 steps:
 - name: startnotify
@@ -10,10 +10,15 @@ steps:
       from_secret: SLACK_WEB_URL
     channel: docker-image-builds
     template: >
-        Build {{build.number}} of {{build.branch}} started. {{build.link}}  
+        Build {{build.number}} of {{build.branch}} started. {{build.link}}
+
+---
+kind: pipeline
+name: imagebuild
+
+steps:
 - name: docker  
   image: plugins/docker
-  #failure: ignore
   settings:
     username: 
       from_secret: docker_registry_username
@@ -26,7 +31,7 @@ steps:
 
 ---
 kind: pipeline
-name: end-notify
+name: endnotify
 
 steps:
 - name: endnotify
@@ -47,7 +52,8 @@ steps:
     #  - failure
 
   depends_on:
-    - build
+    - startnotify
+    - imagebuild
   
   #trigger:
   #  status:
