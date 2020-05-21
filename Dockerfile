@@ -8,14 +8,14 @@ FROM f5devcentral/f5-cli:latest
 LABEL maintainer "jarrod@f5.com"
 
 # Add Required APKs
-# RUN apk add --update pip
+ RUN apk add curl
 # Current f5-cli now has PIP installed
 
 # Upgrade pip
 RUN pip install --upgrade pip
 
 # Add required pip packages
-RUN pip curl install bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
+RUN pip install bigsuds f5-sdk paramiko netaddr deepdiff ansible-lint ansible-review openshift google-auth boto jmespath
 
 # Setup various users and passwords
 RUN adduser -h /home/tfdevbox -u 1000 -s /bin/bash tfdevbox -D
