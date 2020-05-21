@@ -13,6 +13,7 @@ steps:
         Build {{build.number}} of {{build.branch}} started. {{build.link}}  
 - name: docker  
   image: plugins/docker
+  failure: ignore
   settings:
     username: 
       from_secret: docker_registry_username
@@ -22,7 +23,6 @@ steps:
     tags:
       - ${DRONE_COMMIT_SHA:0:7}
       - ${DRONE_COMMIT_BRANCH}
-    failure: ignore
 - name: end-notify
   image: plugins/slack
   settings:
@@ -35,7 +35,7 @@ steps:
       {{else}}
         build {{build.number}} {{build.link}} Failed. Computer says No !
       {{/success}}
-    when:
-      status: 
-      - success
-      - failure
+    #when:
+    #  status: 
+    #  - success
+    #  - failure
