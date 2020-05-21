@@ -53,5 +53,3 @@ steps:
       {{/success}}
   when:
       status: [ success, failure ]
-
- 
